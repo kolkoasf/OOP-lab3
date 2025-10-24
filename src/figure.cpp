@@ -12,7 +12,7 @@ std::istream& operator>>(std::istream& is, Figure& figure) {
 }
 
 std::ostream& operator<<(std::ostream& os, const Figure& figure) {
-  const Point* vertices = figure.GetVertices();
+  const Point* vertices = figure.GetVertices();  // comment for pr
   size_t count = figure.GetVertexCount();
   for (size_t i = 0; i < count; ++i) {
     os << vertices[i];

@@ -21,7 +21,7 @@ class PointTest : public ::testing::Test {
 TEST_F(PointTest, DefaultConstructor) {
   Point p;
   EXPECT_EQ(p.x, 0.0);
-  EXPECT_EQ(p.y, 0.0);
+  EXPECT_EQ(p.y, 0.0);  // comment for pr
 }
 
 TEST_F(PointTest, ParametrizedConstructor) {
