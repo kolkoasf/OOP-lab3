@@ -8,7 +8,7 @@ namespace geometry {
 struct Point {
   static constexpr double EPSILON = 1e-9;
 
-  double x;
+  double x;  // comment for pr
   double y;
 
   Point();

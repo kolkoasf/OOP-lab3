@@ -10,7 +10,7 @@ Trapezoid::Trapezoid(const Point& p1, const Point& p2, const Point& p3, const Po
 }
 
 bool Trapezoid::operator==(const Trapezoid& other) const {
-  return VerticesEqual(other);
+  return VerticesEqual(other);  // comment for pr
 }
 
 Point Trapezoid::GetCenter() const {

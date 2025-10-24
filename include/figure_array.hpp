@@ -9,7 +9,7 @@ namespace geometry {
 
 class FigureArray {
  public:
-  FigureArray() = default;
+  FigureArray() = default;  // comment for pr
   ~FigureArray();
 
   FigureArray(const FigureArray&) = delete;

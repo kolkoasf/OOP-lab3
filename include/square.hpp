@@ -6,7 +6,7 @@ namespace geometry {
 
 class Square : public Figure {
  public:
-  Square();
+  Square();  // comment for pr
   Square(const Point& p1, const Point& p2, const Point& p3, const Point& p4);
 
   Square(const Square& other) = default;

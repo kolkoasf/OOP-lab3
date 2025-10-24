@@ -23,7 +23,7 @@ FigureArray& FigureArray::operator=(FigureArray&& other) noexcept {
 
 void FigureArray::Add(Figure* figure) {
   if (!figure) {
-    throw std::invalid_argument("Nullptr figure");
+    throw std::invalid_argument("Nullptr figure");  // comment for pr
   }
   figures_.push_back(figure);
 }

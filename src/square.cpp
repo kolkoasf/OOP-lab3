@@ -10,7 +10,7 @@ Square::Square(const Point& p1, const Point& p2, const Point& p3, const Point& p
 }
 
 bool Square::operator==(const Square& other) const {
-  return VerticesEqual(other);
+  return VerticesEqual(other);  // comment for pr
 }
 
 Point Square::GetCenter() const {

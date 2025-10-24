@@ -10,7 +10,7 @@ Rectangle::Rectangle(const Point& p1, const Point& p2, const Point& p3, const Po
 }
 
 bool Rectangle::operator==(const Rectangle& other) const {
-  return VerticesEqual(other);
+  return VerticesEqual(other);  // comment for pr
 }
 
 Point Rectangle::GetCenter() const {

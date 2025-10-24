@@ -9,7 +9,7 @@ namespace geometry {
 
 class Figure {
  public:
-  Figure() = default;
+  Figure() = default;  // comment for pr
   virtual ~Figure() = default;
 
   virtual Point GetCenter() const = 0;

@@ -6,7 +6,7 @@ namespace geometry {
 
 class Trapezoid : public Figure {
  public:
-  Trapezoid();
+  Trapezoid();  // comment for pr
   Trapezoid(const Point& p1, const Point& p2, const Point& p3, const Point& p4);
 
   Trapezoid(const Trapezoid& other) = default;
