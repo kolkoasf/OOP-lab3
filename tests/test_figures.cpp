@@ -1,9 +1,8 @@
 #include <gtest/gtest.h>
-
 #include <iostream>
 #include <sstream>
 
-#include "figure_array.hpp"
+#include "figure_vector.hpp"
 #include "point.hpp"
 #include "rectangle.hpp"
 #include "square.hpp"
@@ -232,13 +231,13 @@ class FigureArrayTest : public ::testing::Test {
   FigureArray arr;
 
   void SetUp() override {
-    arr.Add(new Square(Point(0, 0), Point(2, 0), Point(2, 2), Point(0, 2)));
-    arr.Add(new Rectangle(Point(0, 0), Point(4, 0), Point(4, 2), Point(0, 2)));
-    arr.Add(new Trapezoid(Point(0, 0), Point(4, 0), Point(3, 2), Point(1, 2)));
+    arr.Insert(0, new Square(Point(0, 0), Point(2, 0), Point(2, 2), Point(0, 2)));
+    arr.Insert(1, new Rectangle(Point(0, 0), Point(4, 0), Point(4, 2), Point(0, 2)));
+    arr.Insert(2, new Trapezoid(Point(0, 0), Point(4, 0), Point(3, 2), Point(1, 2)));
   }
 };
 
-TEST_F(FigureArrayTest, Add) {
+TEST_F(FigureArrayTest, Insert) {
   EXPECT_EQ(arr.Size(), 3);
 }
 
@@ -247,26 +246,25 @@ TEST_F(FigureArrayTest, GetSize) {
 }
 
 TEST_F(FigureArrayTest, GetFigure) {
-  Figure* fig = arr.Get(0);
+  Figure* fig = arr[0];
   EXPECT_NE(fig, nullptr);
   EXPECT_EQ(static_cast<double>(*fig), 4.0);
 }
 
 TEST_F(FigureArrayTest, GetFigureOutOfBounds) {
-  Figure* fig = arr.Get(10);
-  EXPECT_EQ(fig, nullptr);
+  EXPECT_THROW(arr[10], std::out_of_range);
 }
 
-TEST_F(FigureArrayTest, Remove) {
-  arr.Remove(1);
+TEST_F(FigureArrayTest, Erase) {
+  arr.Erase(1);
   EXPECT_EQ(arr.Size(), 2);
-  EXPECT_NE(arr.Get(0), nullptr);
-  EXPECT_NE(arr.Get(1), nullptr);
+  EXPECT_NE(arr[0], nullptr);
+  EXPECT_NE(arr[1], nullptr);
 }
 
-TEST_F(FigureArrayTest, RemoveOutOfBounds) {
+TEST_F(FigureArrayTest, EraseOutOfBounds) {
   size_t original_size = arr.Size();
-  arr.Remove(10);
+  EXPECT_THROW(arr.Erase(10), std::out_of_range);
   EXPECT_EQ(arr.Size(), original_size);
 }
 
@@ -275,15 +273,15 @@ TEST_F(FigureArrayTest, GetTotalArea) {
   EXPECT_GT(total, 0.0);
 }
 
-TEST_F(FigureArrayTest, GetTotalAreaAfterRemove) {
+TEST_F(FigureArrayTest, GetTotalAreaAfterErase) {
   double total_before = arr.GetTotalArea();
-  arr.Remove(0);
+  arr.Erase(0);
   double total_after = arr.GetTotalArea();
   EXPECT_LT(total_after, total_before);
 }
 
-TEST_F(FigureArrayTest, AddNullptr) {
-  EXPECT_THROW(arr.Add(nullptr), std::invalid_argument);
+TEST_F(FigureArrayTest, InsertNullptr) {
+  EXPECT_THROW(arr.Insert(0, nullptr), std::invalid_argument);
 }
 
 TEST_F(FigureArrayTest, PrintAll) {
@@ -306,15 +304,15 @@ TEST_F(FigureArrayTest, OutputOperator) {
 
 TEST_F(FigureArrayTest, EqualityOperator) {
   FigureArray arr2;
-  arr2.Add(new Square(Point(0, 0), Point(2, 0), Point(2, 2), Point(0, 2)));
-  arr2.Add(new Rectangle(Point(0, 0), Point(4, 0), Point(4, 2), Point(0, 2)));
-  arr2.Add(new Trapezoid(Point(0, 0), Point(4, 0), Point(3, 2), Point(1, 2)));
+  arr2.Insert(0, new Square(Point(0, 0), Point(2, 0), Point(2, 2), Point(0, 2)));
+  arr2.Insert(1, new Rectangle(Point(0, 0), Point(4, 0), Point(4, 2), Point(0, 2)));
+  arr2.Insert(2, new Trapezoid(Point(0, 0), Point(4, 0), Point(3, 2), Point(1, 2)));
   EXPECT_EQ(arr, arr2);
 }
 
 TEST_F(FigureArrayTest, InequalityOperator) {
   FigureArray arr2;
-  arr2.Add(new Square(Point(1, 1), Point(3, 1), Point(3, 3), Point(1, 3)));
+  arr2.Insert(0, new Square(Point(1, 1), Point(3, 1), Point(3, 3), Point(1, 3)));
   EXPECT_NE(arr, arr2);
 }
 
@@ -325,7 +323,7 @@ TEST_F(FigureArrayTest, MoveConstructor) {
 
 TEST_F(FigureArrayTest, MoveAssignment) {
   FigureArray arr2;
-  arr2.Add(new Square(Point(1, 1), Point(3, 1), Point(3, 3), Point(1, 3)));
+  arr2.Insert(0, new Square(Point(1, 1), Point(3, 1), Point(3, 3), Point(1, 3)));
   arr2 = std::move(arr);
   EXPECT_EQ(arr2.Size(), 3);
 }
@@ -336,19 +334,19 @@ class IntegrationTest : public ::testing::Test {
 };
 
 TEST_F(IntegrationTest, CreateMultipleFigures) {
-  shapes.Add(new Square(Point(0, 0), Point(1, 0), Point(1, 1), Point(0, 1)));
-  shapes.Add(new Rectangle(Point(0, 0), Point(2, 0), Point(2, 1), Point(0, 1)));
-  shapes.Add(new Trapezoid(Point(0, 0), Point(2, 0), Point(1.5, 1), Point(0.5, 1)));
+  shapes.Insert(0, new Square(Point(0, 0), Point(1, 0), Point(1, 1), Point(0, 1)));
+  shapes.Insert(1, new Rectangle(Point(0, 0), Point(2, 0), Point(2, 1), Point(0, 1)));
+  shapes.Insert(2, new Trapezoid(Point(0, 0), Point(2, 0), Point(1.5, 1), Point(0.5, 1)));
   EXPECT_EQ(shapes.Size(), 3);
   EXPECT_GT(shapes.GetTotalArea(), 0.0);
 }
 
 TEST_F(IntegrationTest, AllFiguresHaveCenters) {
-  shapes.Add(new Square(Point(0, 0), Point(1, 0), Point(1, 1), Point(0, 1)));
-  shapes.Add(new Rectangle(Point(0, 0), Point(2, 0), Point(2, 1), Point(0, 1)));
-  shapes.Add(new Trapezoid(Point(0, 0), Point(2, 0), Point(1.5, 1), Point(0.5, 1)));
+  shapes.Insert(0, new Square(Point(0, 0), Point(1, 0), Point(1, 1), Point(0, 1)));
+  shapes.Insert(1, new Rectangle(Point(0, 0), Point(2, 0), Point(2, 1), Point(0, 1)));
+  shapes.Insert(2, new Trapezoid(Point(0, 0), Point(2, 0), Point(1.5, 1), Point(0.5, 1)));
   for (size_t i = 0; i < shapes.Size(); ++i) {
-    Figure* fig = shapes.Get(i);
+    Figure* fig = shapes[i];
     Point center = fig->GetCenter();
     EXPECT_TRUE(std::isfinite(center.x));
     EXPECT_TRUE(std::isfinite(center.y));
@@ -356,11 +354,11 @@ TEST_F(IntegrationTest, AllFiguresHaveCenters) {
 }
 
 TEST_F(IntegrationTest, AllFiguresHaveAreas) {
-  shapes.Add(new Square(Point(0, 0), Point(1, 0), Point(1, 1), Point(0, 1)));
-  shapes.Add(new Rectangle(Point(0, 0), Point(2, 0), Point(2, 1), Point(0, 1)));
-  shapes.Add(new Trapezoid(Point(0, 0), Point(2, 0), Point(1.5, 1), Point(0.5, 1)));
+  shapes.Insert(0, new Square(Point(0, 0), Point(1, 0), Point(1, 1), Point(0, 1)));
+  shapes.Insert(1, new Rectangle(Point(0, 0), Point(2, 0), Point(2, 1), Point(0, 1)));
+  shapes.Insert(2, new Trapezoid(Point(0, 0), Point(2, 0), Point(1.5, 1), Point(0.5, 1)));
   for (size_t i = 0; i < shapes.Size(); ++i) {
-    Figure* fig = shapes.Get(i);
+    Figure* fig = shapes[i];
     double area = static_cast<double>(*fig);
     EXPECT_GT(area, 0.0);
   }
@@ -376,11 +374,11 @@ TEST_F(IntegrationTest, InputOutputConsistency) {
   EXPECT_GT(output.length(), 0);
 }
 
-TEST_F(IntegrationTest, RemoveAndRecalculateArea) {
-  shapes.Add(new Square(Point(0, 0), Point(1, 0), Point(1, 1), Point(0, 1)));
-  shapes.Add(new Square(Point(0, 0), Point(1, 0), Point(1, 1), Point(0, 1)));
+TEST_F(IntegrationTest, EraseAndRecalculateArea) {
+  shapes.Insert(0, new Square(Point(0, 0), Point(1, 0), Point(1, 1), Point(0, 1)));
+  shapes.Insert(1, new Square(Point(0, 0), Point(1, 0), Point(1, 1), Point(0, 1)));
   double area_before = shapes.GetTotalArea();
-  shapes.Remove(0);
+  shapes.Erase(0);
   double area_after = shapes.GetTotalArea();
   EXPECT_LT(area_after, area_before);
 }

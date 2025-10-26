@@ -12,7 +12,7 @@ add_library(figures_lib STATIC
     src/square.cpp
     src/rectangle.cpp
     src/trapezoid.cpp
-    src/figure_array.cpp
+    src/figure_vector.cpp
 )
 
 target_include_directories(figures_lib PUBLIC

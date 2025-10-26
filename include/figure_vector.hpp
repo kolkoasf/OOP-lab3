@@ -1,7 +1,7 @@
 #pragma once
 
 #include <cstddef>
-#include <vector>
+#include <iosfwd>
 
 #include "figure.hpp"
 
@@ -9,8 +9,7 @@ namespace geometry {
 
 class FigureArray {
  public:
-  FigureArray() = default;
-  ~FigureArray();
+  FigureArray();
 
   FigureArray(const FigureArray&) = delete;
   FigureArray& operator=(const FigureArray&) = delete;
@@ -18,23 +17,31 @@ class FigureArray {
   FigureArray(FigureArray&&) noexcept;
   FigureArray& operator=(FigureArray&&) noexcept;
 
-  void Add(Figure* figure);
-  void Remove(size_t i);
+  ~FigureArray();
 
+  void Insert(size_t pos, Figure* figure);
+  void Erase(size_t i);
   size_t Size() const;
-  Figure* Get(size_t i) const;
 
-  double GetTotalArea() const;
+  Figure*& operator[](size_t i);
+  const Figure* operator[](size_t i) const;
 
   bool operator==(const FigureArray& other) const;
   bool operator!=(const FigureArray& other) const;
 
-  void PrintAll(std::ostream& os) const;
+  double GetTotalArea() const;
 
   friend std::ostream& operator<<(std::ostream& os, const FigureArray& arr);
 
+  void Reserve(size_t new_capacity);
+  void Clear();
+
+  void PrintAll(std::ostream& os) const;
+
  private:
-  std::vector<Figure*> figures_;
+  size_t sz_;
+  size_t capacity_;
+  Figure** data_;
 };
 
 }  // namespace geometry
